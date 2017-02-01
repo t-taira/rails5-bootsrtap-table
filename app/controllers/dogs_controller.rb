@@ -4,7 +4,10 @@ class DogsController < ApplicationController
   # GET /dogs
   # GET /dogs.json
   def index
-    @dogs = Dog.all.page(params[:page]).per(1)
+    respond_to do |format|
+      format.html
+      format.json {render json: DogsDatatable.new(view_context) }
+    end
   end
 
   # GET /dogs/1

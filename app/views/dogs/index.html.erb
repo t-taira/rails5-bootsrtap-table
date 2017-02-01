@@ -2,32 +2,66 @@
 
 <h1>Dogs</h1>
 
-<table class='table'>
+<table
+  id="table"
+  data-toggle="table"
+  data-striped="true"
+  data-pagination="true"
+  data-side-pagination="server"
+  data-show-header="true"
+  data-show-footer="false"
+  data-sortable="true"
+  data-search="true"
+  data-strict-search="true"
+  data-sort-name="id"
+  data-sort-order="desc"
+  data-search-text=""
+  data-search-time-out="500"
+  data-trim-on-search="true"
+  data-show-columns="true"
+  data-minimum-count-columns="1"
+  data-show-columns="true"
+  data-show-refresh="true"
+  data-show-toggle="true"
+  data-card-view="false"
+  data-smart-display="true"
+  data-query-params-type=""
+  data-query-params="queryParams"
+  data-page-size="10"
+  data-page-number="1"
+  data-page-list="[10, 25, 50, 100]"
+  data-response-handler="responseHandler"
+  data-url="dogs">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Birth</th>
-      <th colspan="3"></th>
+      <th data-field="id" data-sortable="true">ID</th>
+      <th data-field="name" data-sortable="true">Name</th>
+      <th data-field="link" data-sortable="true"></th>
     </tr>
   </thead>
-
-  <tbody>
-    <% @dogs.each do |dog| %>
-      <tr>
-        <td><%= dog.name %></td>
-        <td><%= dog.age %></td>
-        <td><%= dog.birth %></td>
-        <td><%= link_to 'Show', dog %></td>
-        <td><%= link_to 'Edit', edit_dog_path(dog) %></td>
-        <td><%= link_to 'Destroy', dog, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
 </table>
 
-<%= paginate @dogs, outer_window: 4 %>
-
-<br>
-
 <%= link_to 'New Dog', new_dog_path %>
+
+<script type="text/javascript">
+  $('#table').bootstrapTable();
+
+  function responseHandler(res) {
+    if (res.total > 0) {
+      return {"rows": res.rows, "total": res.total}
+    } else {
+      return {"rows": [], "total": 0}
+    }
+  }
+
+  function queryParams(params) {
+    console.log(params);
+    return {
+      per: params.pageSize,
+      page: params.pageNumber,
+      sort_column: params.sortName,
+      sort_direction: params.sortOrder,
+      name: params.searchText
+    };
+  }
+</script>
